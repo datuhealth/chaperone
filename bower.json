@@ -1,0 +1,24 @@
+{
+  "name": "chaperone",
+  "version": "1.0.0-alpha",
+  "homepage": "https://datuhealth.github.io/chaperone/",
+  "authors": [
+    "Ian Jennings <ian.jennings@datuhealth.com>"
+  ],
+  "description": "A responsive webpage tour guide",
+  "main": "dist/chaperone.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "chaperone",
+    "tour guide",
+    "tour",
+    "steps",
+    "javascript",
+    "utility"
+  ],
+  "license": "Apache 2.0"
+}
