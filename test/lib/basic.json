@@ -1,0 +1,10 @@
+{
+  "browser": "firefox",
+  "tests": [
+    {
+      "url": "./test/lib/standard.html",
+      "local": true,
+      "name": "Home"
+    }
+  ]
+}
