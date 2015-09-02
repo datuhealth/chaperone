@@ -60,7 +60,7 @@ tour = {
             // and this one does the y
             lockedTop: -30,
             // This next one is required. It's gotta say something!
-            message: 'Well... it's where we tell you what this thing is.',
+            message: 'Well... it\'s where we tell you what this thing is.',
             // If you need a callback when the throbber opens
             openEvent: openMenu,
             // or when it closes
