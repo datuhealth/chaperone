@@ -22,7 +22,7 @@ chaperone is meant to be IE8+ compatible. If you find otherwise, please open a n
 
 ## Example
 
-```javascript
+```json
 tour = {
     // set up your phone and tablet breakpoints, be as generic as possible.
     // In the future it will except as many as you like and you may name them.. but for now.. just these two wil have to do
