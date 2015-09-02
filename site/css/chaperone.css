@@ -1,0 +1,108 @@
+.chaperone {
+    position: fixed;
+    z-index: @layerTop;
+    bottom:-200px;
+    left:0;
+    right: 0;
+    height: 200px;
+    background-color: rgba(0,0,0,.95);
+    border-top: 5px solid black;
+    color: @white;
+    transition: all .3s;
+}
+
+.chaperone.chaperone-active {
+    bottom:0;
+}
+
+.chaperone .chaperone__header,
+.chaperone .chaperone__body,
+.chaperone .chaperone__controls {
+    padding: 0 15px;
+}
+
+.chaperone .chaperone__header .chaperone__progress {
+    padding: 12px 0;
+}
+
+.chaperone .chaperone__header .close-chaperone {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    padding: 13px 15px;
+}
+
+/* need to replace */
+.chaperone .chaperone__header .close-chaperone svg {
+    fill: #fff;
+}
+
+.chaperone .chaperone__controls {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+}
+
+.chaperone .chaperone__controls .chaperone-btn {
+    /* .btn; */
+    /* .btn--darkGrayFlat; */
+    float: left;
+    width: 50%;
+    margin:0;
+    border-radius: 0;
+}
+
+.chaperone .chaperone__controls .chaperone-btn:first-of-type {
+    border-right:2px solid #222;
+}
+
+.throbber {
+    display: block;
+    position: absolute;
+    z-index: 9999;
+    margin-left: -11px;
+    margin-top: -11px;
+    cursor: help;
+}
+
+.throbber .dot {
+    display: block;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 32px;
+    background: fade(@white, 70%);
+    border: 1px solid @green;
+}
+
+.throbber .dot::after{
+    content:'';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border-radius: 32px;
+    border: 1px solid @green;
+    animation: throb 2s infinite;
+}
+
+.throbber.active .dot {
+    background: fade(@green, 70%);
+}
+
+@keyframes throb {
+  0% {
+     transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      transform:scale(2.5);
+      opacity: 0;
+  }
+}
