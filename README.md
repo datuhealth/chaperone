@@ -75,7 +75,7 @@ tour = {
           // and another
         }
     ]
-    }
+}
 ```
 
 ## License
