@@ -22,6 +22,8 @@ chaperone is meant to be IE8+ compatible. If you find otherwise, please open a n
 
 ## Example
 
+### Tour object
+
 ```javascript
 tour = {
     // set up your phone and tablet breakpoints, be as generic as possible.
@@ -76,6 +78,11 @@ tour = {
         }
     ]
 }
+```
+
+### Fire up that tour!
+```javascript 
+chaperone.init( tour );
 ```
 
 ## License
