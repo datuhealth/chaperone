@@ -11,7 +11,15 @@
     transition: all .3s;
 }
 
-.chaperone.chaperone-active {
+body {
+    transition: margin-bottom .3s;
+}
+
+.chaperone-active {
+    margin-bottom: 200px;
+}
+
+.chaperone-active .chaperone {
     bottom:0;
 }
 
@@ -48,17 +56,30 @@
 }
 
 .chaperone .chaperone__controls .chaperone-btn {
-    /* .btn; */
-    /* .btn--darkGrayFlat; */
-    float: left;
+    box-sizing: border-box;
     width: 50%;
     margin:0;
     border-radius: 0;
+    position: relative;
+    display: block;
+    float: left;
+    padding: 8px 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-align: center;
+    background-color: rgba(0,0,0,.8);
+    border: none;
+}
+
+.chaperone .chaperone__controls .chaperone-btn.hide {
+    display: none;
 }
 
 .chaperone .chaperone__controls .chaperone-btn:first-of-type {
     border-right:2px solid #222;
 }
+
 
 .throbber {
     display: block;
@@ -141,4 +162,26 @@
       -webkit-transform:scale(2.5);
       opacity: 0;
   }
+}
+
+@media (min-width: 640px) {
+    .chaperone .chaperone__header,
+    .chaperone .chaperone__body,
+    .chaperone .chaperone__controls{
+        width: 60%;
+        margin: 0 auto;
+    }
+    .chaperone .chaperone__controls {
+        left: 20%;
+        bottom: 18px;
+        text-align: center;
+    }
+
+    .chaperone .chaperone__controls .chaperone-btn {
+        float: none;
+        border-radius: 3.5px;
+        width: 150px;
+        display: inline-block;
+    }
+
 }

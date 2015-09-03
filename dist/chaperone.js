@@ -20,6 +20,7 @@ module.exports = {
         finishSelector: '[data-hook="chaperone-finish"]',
         animationTime: 300,
         cycle: false,
+        autoStart: true,
         steps: [
             {
                 position: 'fixed',
@@ -123,6 +124,7 @@ module.exports = {
             if ( finishClose ) {
                 self.close();
                 self.currentStep = null;
+                self.endTour();
             }
         }
 
@@ -216,11 +218,15 @@ module.exports = {
 
             // Append the throbber based on its desired position
             if ( step.position === 'locked' ) {
-                target.parentNode.appendChild( throbber );
+                target.insertAdjacentHTML( 'afterend', throbber.outerHTML );
             } else {
                 document.body.appendChild( throbber );
             }
         });
+
+        if ( self.options.autoStart ) {
+            self.open( 0 );
+        }
     },
 
     /**
@@ -237,6 +243,11 @@ module.exports = {
         var self = this,
             stepIndex = parseInt( stepId ),
             step = self.shownSteps[ stepIndex ],
+            stepText = step.message,
+            stepNumber = parseInt( stepIndex + 1 ),
+            stepsTotal = self.shownSteps.length,
+            currentThrobber = document.body.querySelector( '[data-stepid="' + stepId + '"]' ),
+            chaperone = self.createDOMElement( self.options.chaperoneHTML ),
             stepTextContainer,
             progressContainer,
             nextBtn,
@@ -244,11 +255,7 @@ module.exports = {
             finishBtn,
             currentElement,
             targetPosTop,
-            stepText = step.message,
-            stepNumber = parseInt( stepIndex + 1 ),
-            stepsTotal = self.shownSteps.length,
-            currentThrobber = document.body.querySelector( '[data-stepid="' + stepId + '"]' ),
-            chaperone = self.createDOMElement( self.options.chaperoneHTML );
+            chaperoneHeight;
 
         // if there is a target to the step, select the element and find its position.
         if ( step.target ) {
@@ -258,7 +265,6 @@ module.exports = {
 
         // scroll to the throbber
         if ( step.position !== 'fixed' ) {
-            console.log( currentElement.getBoundingClientRect().top, targetPosTop );
             self.scrollTo( document.body, targetPosTop, self.options.animationTime );
         }
         // activate the throbber
@@ -266,6 +272,8 @@ module.exports = {
 
         // Insert the html for the chaperone
         document.body.appendChild( chaperone );
+
+        chaperoneHeight = chaperone.offsetHeight;
 
         // Show the chaperone
         setTimeout( function() {
@@ -283,7 +291,7 @@ module.exports = {
             nextBtn.setAttribute( 'data-stepid', parseInt( stepIndex + 1 ));
             backBtn.setAttribute( 'data-stepid', parseInt( stepIndex - 1 ));
             // Show the chaperone
-            self.addClass( chaperone, 'chaperone-active' );
+            self.addClass( document.body, 'chaperone-active' );
 
             // hide the back button if this is the first step
             if ( stepNumber === 1 ) {
@@ -331,13 +339,23 @@ module.exports = {
         }
         // animate the old step out
         if ( currentChaperone ) {
-            self.removeClass( currentChaperone, 'chaperone-active' );
+            self.removeClass( document.body, 'chaperone-active' );
 
             setTimeout( function() {
                 // remove the old step
                 currentChaperone.parentNode.removeChild( currentChaperone );
             }, self.options.animationTime );
         }
+    },
+
+    endTour: function endTour() {
+        'use strict';
+
+        var throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
+
+        throbbers.forEach( function( throbber ) {
+            throbber.parentNode.removeChild( throbber );
+        });
     },
 
     /**

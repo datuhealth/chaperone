@@ -930,10 +930,13 @@ there.
     left: auto;
     width: 300px;
     margin: 0 auto;
+    overflow: hidden;
+    background-color: transparent;
   }
 
   nav ul {
     margin-bottom: 0;
+    height: 45px;
   }
 
   nav ul li {
@@ -945,10 +948,11 @@ there.
   nav ul li a {
     text-align: center;
   }
-  
+
   .logo {
     text-align: left;
-    float: left;
+    position: absolute;
+    left: 10px;
     font-size: 2.4rem; line-height: 1.85; letter-spacing: -.08rem;
     padding: 0 15px;
   }
@@ -957,9 +961,6 @@ there.
     display: none;
   }
 }
-
-/* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {}
 
 /* Larger than tablet */
 @media (min-width: 750px) {}

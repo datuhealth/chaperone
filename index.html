@@ -17,7 +17,7 @@
         </button>
         <h1 class="logo" data-hook="logo">chaperone</h1>
         <nav>
-            <ul>
+            <ul data-hook="nav">
                 <li><a href="#what" onclick="toggleNav();" data-hook="what">what</a></li>
                 <li><a href="#how" onclick="toggleNav();" data-hook="how">how</a></li>
                 <li><a href="#who" onclick="toggleNav();" data-hook="who">who</a></li>
@@ -28,9 +28,14 @@
 <div class="container">
     <section id="what" class="row">
         <h3>Chaperone creates a guided tour for responsive web sites and applications.</h3>
+        <p><button class="button-primary start-tour" data-hook="start-tour" onclick="startTour();">Tour this page!</button></p>
         <p>We searched the web for a lightweight script that would allow us to provide our users with a simple guided tour of our app. Though there are some pretty nice tours out there we didn't see any that worked really well at any screen size.</p>
-        <p>Thus was born chaperone.js. In the configuration of your custom tour you can specify what screen sizes each step of the tour should be shown on. If the user opens your app/site on their phone they won't be shown the steps designated only for desktop and vice-versa.</p>
-        <button class="button-primary start-tour" data-hook="start-tour" onclick="startTour();">Tour this page!</button>
+        <p>Thus was born chaperone.js.</p>
+        <ul>
+            <li>Lightweight: 11kb minified</li>
+            <li>Responsive: you name the breakpoints</li>
+            <li>Flexible: bring your own markup</li>
+        </ul>
     </section>
     <section id="how" class="row">
         <h2>Install</h2>
@@ -95,10 +100,14 @@
     ]
     }</code></pre>
     <h4>Lauch that tour!</h4>
-    <pre><code>chaperone.init( tour );</code></pre>
+    <pre><code>if ( !chaperone.shownSteps ) {
+        chaperone.init( tour );
+    } else {
+        chaperone.placeSteps( chaperone.shownSteps );
+}</code></pre>
     </section>
-    <section id="who" class="row">
-        <h2 data-hook="responsible">Responsible parties</h2>
+    <section id="who" class="row" data-hook="responsible">
+        <h2>Responsible parties</h2>
         <p>chaperone is a product of the <a href="http://www.datuhealth.com">datu health</a> design process and was shepherded into existance by <a href="https://github.com/spacecowboyian">Ian</a> with much help from <a href="https://github.com/mike-engel">Mike</a></p>
     </section>
 </div>
@@ -110,24 +119,30 @@
             steps: [
                 {
                     target:'[data-hook="logo"]',
+                    position: 'fixed',
                     location: 'bottomMiddle',
-                    message: 'It\'s the chaperone logo. Very minimalistic'
+                    message: 'Look for these green "throbbers" all over the page or just use the next and back buttons below. The first stop on our tour is the chaperone logo. Very minimalist.'
                 },
                 {
-                    target:'[data-hook="what"]',
+                    target:'[data-hook="nav"]',
+                    position: 'fixed',
                     location: 'bottomMiddle',
-                    message: 'This is where you find out what chaperone is all about.'
+                    message: 'This is the menu. You click links and new sections scroll in to view. See how its centered on the bottom of the element. That\'s location: "bottomMiddle" at work!',
+                    shownOn: [ 'tablet', 'desktop' ]
                 },
                 {
-                    target:'[data-hook="how"]',
-                    location: 'bottomMiddle',
-                    message: 'This is where you figure out how to unleash the chaperone.'
-                }
-                ,
+                    target:'[data-hook="usage"]',
+                    position: 'locked',
+                    lockedLeft: 120,
+                    lockedTop: -50,
+                    message: 'This is the section where we explain how to implement chaperone. Notice that you were (hopefully) scrolled to this location.'
+                },
                 {
-                    target:'[data-hook="who"]',
-                    location: 'bottomMiddle',
-                    message: 'The culprits behind chaperone.'
+                    target:'[data-hook="responsible"]',
+                    position: 'locked',
+                    lockedLeft: 120,
+                    lockedTop: -50,
+                    message: 'The last stop on our tour brings us to the "who-dun-it" section. Note that the "next" button has now changed to "finish". Click that to jump off the tour. Buh bye now.'
                 }
             ]
         }
@@ -146,8 +161,11 @@
         }
 
         function startTour() {
-            console.log( 'yes' );
-            chaperone.init( tour );
+            if ( !chaperone.shownSteps ) {
+                chaperone.init( tour );
+            } else {
+                chaperone.placeSteps( chaperone.shownSteps );
+            }
         }
     </script>
 </body>
