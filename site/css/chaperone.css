@@ -1,13 +1,13 @@
 .chaperone {
     position: fixed;
-    z-index: @layerTop;
+    z-index: 9999;
     bottom:-200px;
     left:0;
     right: 0;
     height: 200px;
-    background-color: rgba(0,0,0,.95);
+    background-color: rgba(0,0,0,.85);
     border-top: 5px solid black;
-    color: @white;
+    color: #fff;
     transition: all .3s;
 }
 
@@ -75,8 +75,8 @@
     width: 22px;
     height: 22px;
     border-radius: 32px;
-    background: fade(@white, 70%);
-    border: 1px solid @green;
+    background: rgba( 255,255,255,0.7 );
+    border: 1px solid #19A347;
 }
 
 .throbber .dot::after{
@@ -86,23 +86,59 @@
     z-index: -1;
     width: 18px;
     height: 18px;
-    margin: 0;
+    margin: 1px 0 0 1px;
     border-radius: 32px;
-    border: 1px solid @green;
+    border: 1px solid #19A347;
+    -webkit-animation: throb 2s infinite;
+    -moz-animation: throb 2s infinite;
+    -o-animation: throb 2s infinite;
     animation: throb 2s infinite;
 }
 
 .throbber.active .dot {
-    background: fade(@green, 70%);
+    background: rgba(25,163,71,.7);
+}
+
+@-webkit-keyframes throb {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(2.5);
+      opacity: 0;
+  }
+}
+
+@-moz-keyframes throb {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(2.5);
+      opacity: 0;
+  }
+}
+
+@-o-keyframes throb {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(2.5);
+      opacity: 0;
+  }
 }
 
 @keyframes throb {
   0% {
-     transform: scale(1);
+    -webkit-transform: scale(1);
      opacity: 1;
   }
   100% {
-      transform:scale(2.5);
+      -webkit-transform:scale(2.5);
       opacity: 0;
   }
 }

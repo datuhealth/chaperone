@@ -2,11 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Chaperone</title>
-  <link rel="stylesheet" href="site/css/site.css">
-  <link rel="stylesheet" href="site/css/chaperone.css">
+    <meta charset="UTF-8">
+    <title>Chaperone</title>
+    <link rel="stylesheet" href="site/css/site.css">
+    <link rel="stylesheet" href="site/css/chaperone.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="dist/chaperone.js"></script>
 </head>
 
 <body>
@@ -14,12 +15,12 @@
         <button class="c-hamburger c-hamburger--htx" onclick="toggleNav();">
           <span>toggle menu</span>
         </button>
-        <h1 class="logo">chaperone</h1>
+        <h1 class="logo" data-hook="logo">chaperone</h1>
         <nav>
             <ul>
-                <li><a href="#what" onclick="toggleNav();">what</a></li>
-                <li><a href="#how" onclick="toggleNav();">how</a></li>
-                <li><a href="#who" onclick="toggleNav();">who</a></li>
+                <li><a href="#what" onclick="toggleNav();" data-hook="what">what</a></li>
+                <li><a href="#how" onclick="toggleNav();" data-hook="how">how</a></li>
+                <li><a href="#who" onclick="toggleNav();" data-hook="who">who</a></li>
             </ul>
         </nav>
     </header>
@@ -29,7 +30,7 @@
         <h3>Chaperone creates a guided tour for responsive web sites and applications.</h3>
         <p>We searched the web for a lightweight script that would allow us to provide our users with a simple guided tour of our app. Though there are some pretty nice tours out there we didn't see any that worked really well at any screen size.</p>
         <p>Thus was born chaperone.js. In the configuration of your custom tour you can specify what screen sizes each step of the tour should be shown on. If the user opens your app/site on their phone they won't be shown the steps designated only for desktop and vice-versa.</p>
-        <button class="button-primary start-tour" data-hook="start-tour">Tour this page!</button>
+        <button class="button-primary start-tour" data-hook="start-tour" onclick="startTour();">Tour this page!</button>
     </section>
     <section id="how" class="row">
         <h2>Install</h2>
@@ -38,7 +39,7 @@
         <h4>Bower</h4>
         <blockquote>bower install chaperone</blockquote>
 
-        <h2>Usage</h2>
+        <h2 data-hook="usage">Usage</h2>
         <h4>Create a tour object</h4>
         <pre><code>tour = {
     // set up your phone and tablet breakpoints, be as generic as possible.
@@ -69,7 +70,7 @@
     steps: [
         {
             // if there isn't a target selector the default is 'body'
-            target:'[data-tour-step="nav-what"]',
+            target:'[data-hook="nav-what"]',
             // position can be none( absolute ), locked (absolute to the container of the target) or fixed (fixed to the window)
             position: 'locked',
             // when locked you can control the distance of the throbber from the target. This one controls the x axis.
@@ -97,7 +98,7 @@
     <pre><code>chaperone.init( tour );</code></pre>
     </section>
     <section id="who" class="row">
-        <h2>Responsible parties</h2>
+        <h2 data-hook="responsible">Responsible parties</h2>
         <p>chaperone is a product of the <a href="http://www.datuhealth.com">datu health</a> design process and was shepherded into existance by <a href="https://github.com/spacecowboyian">Ian</a> with much help from <a href="https://github.com/mike-engel">Mike</a></p>
     </section>
 </div>
@@ -105,6 +106,32 @@
 
 </footer>
     <script>
+        var tour = {
+            steps: [
+                {
+                    target:'[data-hook="logo"]',
+                    location: 'bottomMiddle',
+                    message: 'It\'s the chaperone logo. Very minimalistic'
+                },
+                {
+                    target:'[data-hook="what"]',
+                    location: 'bottomMiddle',
+                    message: 'This is where you find out what chaperone is all about.'
+                },
+                {
+                    target:'[data-hook="how"]',
+                    location: 'bottomMiddle',
+                    message: 'This is where you figure out how to unleash the chaperone.'
+                }
+                ,
+                {
+                    target:'[data-hook="who"]',
+                    location: 'bottomMiddle',
+                    message: 'The culprits behind chaperone.'
+                }
+            ]
+        }
+
         function toggleNav() {
             var header = document.body.querySelector( 'header' ),
                 navSwitch = document.body.querySelector( '.c-hamburger' );
@@ -116,6 +143,11 @@
                 header.classList.remove( 'nav-open' );
                 navSwitch.classList.remove( 'is-active' );
             }
+        }
+
+        function startTour() {
+            console.log( 'yes' );
+            chaperone.init( tour );
         }
     </script>
 </body>
