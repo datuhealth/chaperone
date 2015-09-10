@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <title>Chaperone</title>
     <link rel="stylesheet" href="site/css/site.css">
+    <link rel="stylesheet" href="site/css/prism.css">
     <link rel="stylesheet" href="site/css/chaperone.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="site/js/prism.js"></script>
     <script type="text/javascript" src="dist/chaperone.js"></script>
 </head>
 
@@ -41,19 +43,21 @@
     <section id="how" class="row">
         <h2>Install</h2>
         <h4>NPM</h4>
-        <blockquote>npm install chaperone</blockquote>
+        <pre class="language-javascript"><code>npm install chaperone</code></pre>
         <h4>Bower</h4>
-        <blockquote>bower install chaperone</blockquote>
+        <pre class="language-javascript"><code>bower install chaperone</code></pre>
 
         <h2 data-hook="usage">Usage</h2>
         <h4>Create a tour object</h4>
-        <pre><code>tour = {
+        <pre class="language-javascript"><code>tour = {
     // set up your phone and tablet breakpoints, be as generic as possible.
     // In the future it will except as many as you like and you may name them.. but for now.. just these two wil have to do
     breakpoints: {
         mobile: 640,
         tablet: 1024
     },
+    // If you want the tour to start as soon as the script is run, change this to true.
+    autoStart: false,
     // If you don't like the standard throbber html you can put yours here
     throbberHTML: 'your fancy html here',
     // Again, don't like the standard? Replace it!
@@ -101,7 +105,7 @@
     ]
     }</code></pre>
     <h4>Lauch that tour!</h4>
-    <pre><code>if ( !chaperone.shownSteps ) {
+    <pre class="language-javascript"><code>if ( !chaperone.shownSteps ) {
         chaperone.init( tour );
     } else {
         chaperone.placeSteps( chaperone.shownSteps );
