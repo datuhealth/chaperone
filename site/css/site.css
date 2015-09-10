@@ -905,10 +905,14 @@ section {
     border-bottom: 5px solid #ddd;
 }
 
+.tagline {
+  text-align: center;
+  margin: 50px 0 0;
+}
+
 .start-tour {
     display: block;
-    width: 50%;
-    margin:0 auto;
+    margin:30px auto 100px;
 }
 
 /* Media Queries

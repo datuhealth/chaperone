@@ -5,9 +5,9 @@
     left:0;
     right: 0;
     height: 200px;
-    background-color: rgba(0,0,0,.85);
-    border-top: 5px solid black;
-    color: #fff;
+    background-color: rgba(250,250,250,.98);
+    box-shadow: 0 -2px 4px rgba(0,0,0,.4);
+    color: #333;
     transition: all .3s;
 }
 
@@ -29,47 +29,99 @@ body {
     padding: 0 15px;
 }
 
-.chaperone .chaperone__header .chaperone__progress {
-    padding: 12px 0;
-}
-
-.chaperone .chaperone__header .close-chaperone {
+.chaperone .chaperone__header .chaperone__title {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 44px;
-    height: 44px;
-    padding: 13px 15px;
+    padding: 12px 0;
+    color: #61A159;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
-/* need to replace */
-.chaperone .chaperone__header .close-chaperone svg {
-    fill: #fff;
+.chaperone .chaperone__header .chaperone__progress {
+    color: #ADB4BB;
+    padding: 12px 0;
+    text-align: right;
+}
+
+.chaperone .chaperone__body {
+    font-size: 16px;
+    font-weight: 200;
 }
 
 .chaperone .chaperone__controls {
     position: fixed;
     bottom: 0;
     width: 100%;
-    text-align: center;
+    text-align: right;
     padding: 0;
+    background: rgba(255,255,255,.9);
+    border-top: 1px solid #ddd;
+}
+
+.chaperone .chaperone__controls a {
+    cursor: pointer;
+}
+
+.chaperone .close-chaperone {
+  display: block;
+  position: absolute;
+  width: 24px;
+  height:24px;
+  padding: 11px;
+  text-align: center;
+}
+
+.chaperone .close{
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.chaperone .close:hover::before,
+.chaperone .close:hover::after {
+    background: red;
+}
+
+.chaperone .close::before,
+.chaperone .close::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #999;
+  height: 2px;
+  margin-top: -2px;
+}
+
+.chaperone .close::before {
+  transform: rotate(45deg);
+}
+.chaperone .close::after {
+  transform: rotate(-45deg);
 }
 
 .chaperone .chaperone__controls .chaperone-btn {
     box-sizing: border-box;
-    width: 50%;
+    width: 100px;
     margin:0;
     border-radius: 0;
     position: relative;
-    display: block;
-    float: left;
-    padding: 8px 15px;
-    font-weight: 400;
+    display: inline-block;
+    padding: 12px 15px;
+    font-size: 12px;
+    font-weight: 600;
     line-height: 1.4;
     letter-spacing: 0.04em;
     text-align: center;
-    background-color: rgba(0,0,0,.8);
+    background-color: transparent;
     border: none;
+    text-transform: uppercase;
 }
 
 .chaperone .chaperone__controls .chaperone-btn.hide {
@@ -96,8 +148,13 @@ body {
     width: 22px;
     height: 22px;
     border-radius: 32px;
-    background: rgba( 255,255,255,0.7 );
-    border: 1px solid #19A347;
+    background: rgba( 255,255,255,.6 );
+    border: 1px solid #aaa;
+}
+
+.throbber.active .dot {
+    background: rgba(97, 161, 89, 0.6);
+    border-color: #61A159;
 }
 
 .throbber .dot::after{
@@ -109,15 +166,17 @@ body {
     height: 18px;
     margin: 1px 0 0 1px;
     border-radius: 32px;
-    border: 1px solid #19A347;
+    border: 1px solid #999;
     -webkit-animation: throb 2s infinite;
     -moz-animation: throb 2s infinite;
     -o-animation: throb 2s infinite;
     animation: throb 2s infinite;
 }
 
-.throbber.active .dot {
-    background: rgba(25,163,71,.7);
+.throbber.active .dot:after {
+    background: rgba(97, 161, 89, 0.3);
+    border-color: #61A159;
+    animation: throb-active 2s infinite;
 }
 
 @-webkit-keyframes throb {
@@ -164,24 +223,74 @@ body {
   }
 }
 
+@-webkit-keyframes throb-active {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(4.5);
+      opacity: 0;
+  }
+}
+
+@-moz-keyframes throb-active {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(4.5);
+      opacity: 0;
+  }
+}
+
+@-o-keyframes throb-active {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(4.5);
+      opacity: 0;
+  }
+}
+
+@keyframes throb-active {
+  0% {
+    -webkit-transform: scale(1);
+     opacity: 1;
+  }
+  100% {
+      -webkit-transform:scale(4.5);
+      opacity: 0;
+  }
+}
+
 @media (min-width: 640px) {
     .chaperone .chaperone__header,
     .chaperone .chaperone__body,
-    .chaperone .chaperone__controls{
+    .chaperone .chaperone__controls__wrapper{
         width: 60%;
+        max-width: 560px;
         margin: 0 auto;
+        padding: 0;
     }
     .chaperone .chaperone__controls {
-        left: 20%;
-        bottom: 18px;
-        text-align: center;
+        text-align: right;
     }
 
-    .chaperone .chaperone__controls .chaperone-btn {
-        float: none;
-        border-radius: 3.5px;
-        width: 150px;
-        display: inline-block;
+    .chaperone .chaperone__controls__wrapper{ 
+        position: relative;
     }
 
+    .chaperone .chaperone__controls .close-chaperone {
+        position: absolute;
+        left: -15px;
+        top: -2px;
+    }
+
+    .chaperone .chaperone__controls .chaperone-btn{
+        right: -30px;
+    }
 }

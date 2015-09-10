@@ -11,7 +11,7 @@ module.exports = {
             tablet: 1024
         },
         throbberHTML: '<span class="throbber"><span class="dot"></span></span>',
-        chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__progress" data-hook="chaperone-progress">3 of 8</div><a href="javascript:void(0);" class="close-chaperone" data-hook="close-chaperone"><svg class="icon icon-x"><use xlink:href="#x"></svg></a></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><a href="javascript:void(0);" class="chaperone-btn" data-hook="chaperone-back">Back</a><a href="javascript:void(0);" class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a href="javascript:void(0);" class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div>',
+        chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__title" data-hook="chaperone-title"></div><div class="chaperone__progress" data-hook="chaperone-progress">X of X</div></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><div class="chaperone__controls__wrapper"><a class="close-chaperone" data-hook="close-chaperone"><span class="close thick"></span></a><a class="chaperone-btn" data-hook="chaperone-back">Back</a><a class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div></div>',
         progressSelector: '[data-hook="chaperone-progress"]',
         textSelector: '[data-hook="chaperone-text"]',
         backSelector: '[data-hook="chaperone-back"]',
@@ -24,7 +24,8 @@ module.exports = {
             {
                 position: 'fixed',
                 location: 'windowMiddle',
-                message: 'Welcome to Chaperone. Add some more steps already!'
+                title: 'Welcome to Chaperone.',
+                message: 'Add some more steps already!'
             }
         ]
     },
@@ -70,7 +71,7 @@ module.exports = {
         }
 
         // Logic for handling a click event
-        function clickHandler( evt ) {
+        self.clickHandler = function clickHandler( evt ) {
             if ( !evt ) {
                 evt = window.event;
             }
@@ -80,7 +81,7 @@ module.exports = {
                 finishClose;
 
             // check to see if this is the throbber dot and if it is.. make the trigger the throbber instead
-            if ( self.hasClass( trigger , 'dot' )) {
+            if ( self.hasClass( trigger , 'dot' ) || self.hasClass( trigger , 'close' )) {
                 trigger = trigger.parentNode;
             }
 
@@ -107,8 +108,7 @@ module.exports = {
                                 }
                             }
                         }
-                        self.close( self.currentStep );
-                        self.currentStep = null;
+                        self.close();
                     }
                 }
                 // Store the trigger element
@@ -137,7 +137,7 @@ module.exports = {
         this.placeSteps( self.options.steps );
 
         // Add the global click handler
-        this.addEventListener( document.body, 'click', clickHandler );
+        this.addEventListener( document.body, 'click', self.clickHandler );
 
         // If a throbber is open and the user resizes the page, tour needs to keep up with the trigger
         this.addEventListener( window, 'resize', this.windowChangeHandler );
@@ -242,12 +242,14 @@ module.exports = {
         var self = this,
             stepIndex = parseInt( stepId ),
             step = self.shownSteps[ stepIndex ],
+            stepTitle = step.title,
             stepText = step.message,
             stepNumber = parseInt( stepIndex + 1 ),
             stepsTotal = self.shownSteps.length,
             currentThrobber = document.body.querySelector( '[data-stepid="' + stepId + '"]' ),
             chaperone = self.createDOMElement( self.options.chaperoneHTML ),
             stepTextContainer,
+            titleContainer,
             progressContainer,
             nextBtn,
             backBtn,
@@ -279,12 +281,16 @@ module.exports = {
             // fill vars with elements as they now exist
             progressContainer = document.body.querySelector( self.options.progressSelector );
             stepTextContainer = document.body.querySelector( self.options.textSelector );
+            titleContainer = document.body.querySelector( '[data-hook="chaperone-title"]' );
             nextBtn = document.body.querySelector( self.options.nextSelector );
             backBtn = document.body.querySelector( self.options.backSelector );
             finishBtn = document.body.querySelector( self.options.finishSelector );
             // Place the step progress in the chaperone
             progressContainer.innerText = stepNumber + ' of ' + stepsTotal;
             // Place the help text in the chaperone
+            if ( stepTitle ) {
+                titleContainer.innerText = stepTitle;
+            }
             stepTextContainer.innerText = stepText;
             // Set up the buttons
             nextBtn.setAttribute( 'data-stepid', parseInt( stepIndex + 1 ));
@@ -345,6 +351,7 @@ module.exports = {
                 currentChaperone.parentNode.removeChild( currentChaperone );
             }, self.options.animationTime );
         }
+        self.currentStep = null;
     },
 
     endTour: function endTour() {
@@ -355,6 +362,9 @@ module.exports = {
         throbbers.forEach( function( throbber ) {
             throbber.parentNode.removeChild( throbber );
         });
+
+        // Add the global click handler
+        this.removeEventListener( document.body, 'click', self.clickHandler );
     },
 
     /**

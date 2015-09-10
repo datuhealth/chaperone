@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><symbol id="x" viewBox="0 0 16 16"><title>x icon</title><path d="M10.276 8.015l5.693 5.704L13.69 16 8 10.296 2.306 16 .03 13.72l5.693-5.705L.03 2.312 2.307.03 8 5.734 13.69.03l2.277 2.282-5.694 5.703z" id="Line" fill-rule="evenodd"/></symbol></svg>
     <header>
         <button class="c-hamburger c-hamburger--htx" onclick="toggleNav();">
           <span>toggle menu</span>
@@ -27,7 +28,7 @@
 
 <div class="container">
     <section id="what" class="row">
-        <h3>Chaperone creates a guided tour for responsive web sites and applications.</h3>
+        <h3 class="tagline">Guided tours for responsive web sites and applications.</h3>
         <p><button class="button-primary start-tour" data-hook="start-tour" onclick="startTour();">Tour this page!</button></p>
         <p>We searched the web for a lightweight script that would allow us to provide our users with a simple guided tour of our app. Though there are some pretty nice tours out there we didn't see any that worked really well at any screen size.</p>
         <p>Thus was born chaperone.js.</p>
@@ -106,8 +107,8 @@
         chaperone.placeSteps( chaperone.shownSteps );
 }</code></pre>
     </section>
-    <section id="who" class="row" data-hook="responsible">
-        <h2>Responsible parties</h2>
+    <section id="who" class="row">
+        <h2 data-hook="responsible">Responsible parties</h2>
         <p>chaperone is a product of the <a href="http://www.datuhealth.com">datu health</a> design process and was shepherded into existance by <a href="https://github.com/spacecowboyian">Ian</a> with much help from <a href="https://github.com/mike-engel">Mike</a></p>
     </section>
 </div>
@@ -121,28 +122,32 @@
                     target:'[data-hook="logo"]',
                     position: 'fixed',
                     location: 'bottomMiddle',
-                    message: 'Look for these green "throbbers" all over the page or just use the next and back buttons below. The first stop on our tour is the chaperone logo. Very minimalist.'
+                    title: 'Let\'s go!',
+                    message: 'Look for these glowing "throbbers" all over the page or just use the next and back buttons below. The first stop on our tour is the chaperone logo.'
                 },
                 {
                     target:'[data-hook="nav"]',
                     position: 'fixed',
                     location: 'bottomMiddle',
-                    message: 'This is the menu. You click links and new sections scroll in to view. See how its centered on the bottom of the element. That\'s location: "bottomMiddle" at work!',
+                    title: 'Menu',
+                    message: 'You click links and new sections scroll in to view. See how its centered on the bottom of the element. That\'s location: "bottomMiddle" at work!',
                     shownOn: [ 'tablet', 'desktop' ]
                 },
                 {
                     target:'[data-hook="usage"]',
                     position: 'locked',
-                    lockedLeft: 120,
-                    lockedTop: -50,
+                    lockedLeft: -25,
+                    lockedTop: -53,
+                    title: 'Implementation',
                     message: 'This is the section where we explain how to implement chaperone. Notice that you were (hopefully) scrolled to this location.'
                 },
                 {
                     target:'[data-hook="responsible"]',
                     position: 'locked',
-                    lockedLeft: 120,
-                    lockedTop: -50,
-                    message: 'The last stop on our tour brings us to the "who-dun-it" section. Note that the "next" button has now changed to "finish". Click that to jump off the tour. Buh bye now.'
+                    lockedLeft: -26,
+                    lockedTop: -55,
+                    title: 'The end is near',
+                    message: 'The last stop on our tour brings us to the "who-dun-it" section. Note that the "next" button has now changed to "finish". Click that to jump off the tour.'
                 }
             ]
         }
