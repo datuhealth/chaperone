@@ -1,5 +1,7 @@
 /* global DocumentTouch */
 
+'use strict';
+
 module.exports = {
     /**
      * Setup global options
@@ -17,6 +19,7 @@ module.exports = {
         backSelector: '[data-hook="chaperone-back"]',
         nextSelector: '[data-hook="chaperone-next"]',
         finishSelector: '[data-hook="chaperone-finish"]',
+        finishCallback: function() { return; },
         animationTime: 300,
         cycle: false,
         autoStart: true,
@@ -39,8 +42,6 @@ module.exports = {
      * @return {void}
      */
     init: function initializeTour( tour ) {
-        'use strict';
-
         var self = this;
 
         // Check to see if we should use document.body or document.documentElement
@@ -125,7 +126,7 @@ module.exports = {
                 self.currentStep = null;
                 self.endTour();
             }
-        }
+        };
 
         this.windowChangeHandler = function windowChangeHandler() {
             // TODO: make a "refresh" message apeear upon window resize
@@ -151,8 +152,6 @@ module.exports = {
      * @return {void}
      */
     placeSteps: function placeSteps( steps ) {
-        'use strict';
-
         var self = this,
             currentSize = self.getCurrentScreenSize();
 
@@ -237,8 +236,6 @@ module.exports = {
      * @return {object} - Returns the step object
      */
     open: function openStep( stepId ) {
-        'use strict';
-
         var self = this,
             stepIndex = parseInt( stepId ),
             step = self.shownSteps[ stepIndex ],
@@ -327,8 +324,6 @@ module.exports = {
      * @return {void}
      */
     close: function closeStep() {
-        'use strict';
-
         var self = this,
             currentChaperone = document.body.querySelector( '.chaperone' ),
             activeThrobber = document.body.querySelector( '.throbber.active' ),
@@ -355,8 +350,6 @@ module.exports = {
     },
 
     endTour: function endTour() {
-        'use strict';
-
         var throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
 
         throbbers.forEach( function( throbber ) {
@@ -364,7 +357,9 @@ module.exports = {
         });
 
         // Add the global click handler
-        this.removeEventListener( document.body, 'click', self.clickHandler );
+        this.removeEventListener( document.body, 'click', this.clickHandler );
+
+        this.options.finishCallback();
     },
 
     /**
@@ -379,8 +374,6 @@ module.exports = {
      * @api private
      */
     addEventListener: function addEventListener( el, eventName, handler, useCapture ) {
-        'use strict';
-
         if ( !useCapture ) {
             useCapture = false;
         }
@@ -414,8 +407,6 @@ module.exports = {
      * @api private
      */
     removeEventListener: function removeEventListener( el, eventName, handler, useCapture ) {
-        'use strict';
-
         if ( !useCapture ) {
             useCapture = false;
         }
@@ -450,8 +441,6 @@ module.exports = {
      * @api private
      */
     hasClass: function hasClass( el, className ) {
-        'use strict';
-
         if ( el.classList ) {
             return el.classList.contains( className );
         } else {
@@ -470,8 +459,6 @@ module.exports = {
      * @api private
      */
     addClass: function addClass( el, className ) {
-        'use strict';
-
         if ( el.classList ) {
             el.classList.add( className );
         } else {
@@ -492,8 +479,6 @@ module.exports = {
      * @api private
      */
     removeClass: function removeClass( el, className ) {
-        'use strict';
-
         if ( el ) {
             if ( el.classList ) {
                 el.classList.remove( className );
@@ -516,8 +501,6 @@ module.exports = {
      * @api private
      */
     setInnerText: function setInnerText( el, text ) {
-        'use strict';
-
         if ( el.textContent !== undefined ) {
             el.textcontent = text;
         } else {
@@ -536,8 +519,6 @@ module.exports = {
      * @api private
      */
     createDOMElement: function createDOMElement( html ) {
-        'use strict';
-
         var div = document.createElement( 'div' );
         div.innerHTML = html;
 
@@ -552,8 +533,6 @@ module.exports = {
      * @api private
      */
     getOffset: function getOffset( el ) {
-        'use strict';
-
         var rect = el.getBoundingClientRect(),
         scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
         scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -572,8 +551,6 @@ module.exports = {
      * @api private
      */
     getZindex: function getZindex( e ) {
-        'use strict';
-
         var self = this,
             z,
             dv = document.defaultView || window;
@@ -581,7 +558,7 @@ module.exports = {
         if ( dv.getComputedStyle ) {
             z = dv.getComputedStyle( e ).getPropertyValue( 'z-index' );
         } else {
-            z = e.currentStyle[ 'zindex' ];
+            z = e.currentStyle.zindex;
         }
 
         if ( isNaN( z )) {
@@ -600,8 +577,6 @@ module.exports = {
      * @api private
      */
     scrollTo: function scrollTo( element, to, duration ) {
-        'use strict';
-
         if ( duration < 0 ) {
             return;
         }
@@ -627,8 +602,6 @@ module.exports = {
      * @api private
      */
     arrayContains: function arrayContains( a, obj ) {
-        'use strict';
-
         var i = a.length;
 
         while ( i-- ) {
@@ -646,8 +619,6 @@ module.exports = {
      * @api private
      */
     getCurrentScreenSize: function getCurrentScreenSize() {
-        'use strict';
-
         var self = this,
             currentSize;
 
