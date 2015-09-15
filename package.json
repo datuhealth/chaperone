@@ -1,6 +1,6 @@
 {
   "name": "chaperone",
-  "version": "1.0.0-alpha2",
+  "version": "1.0.0-beta2",
   "description": "A responsive web tour guide",
   "main": "chaperone.js",
   "scripts": {
