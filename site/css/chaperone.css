@@ -11,15 +11,11 @@
     transition: all .3s;
 }
 
-body {
-    transition: margin-bottom .3s;
-}
-
 .chaperone-active {
     margin-bottom: 200px;
 }
 
-.chaperone-active .chaperone {
+.chaperone.active  {
     bottom:0;
 }
 
@@ -68,7 +64,7 @@ body {
   position: absolute;
   width: 24px;
   height:24px;
-  padding: 11px;
+  padding: 10px 11px;
   text-align: center;
 }
 

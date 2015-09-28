@@ -1,5 +1,7 @@
 /* global DocumentTouch */
 
+'use strict';
+
 module.exports = {
     /**
      * Setup global options
@@ -12,11 +14,13 @@ module.exports = {
         },
         throbberHTML: '<span class="throbber"><span class="dot"></span></span>',
         chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__title" data-hook="chaperone-title"></div><div class="chaperone__progress" data-hook="chaperone-progress">X of X</div></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><div class="chaperone__controls__wrapper"><a class="close-chaperone" data-hook="close-chaperone"><span class="close thick"></span></a><a class="chaperone-btn" data-hook="chaperone-back">Back</a><a class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div></div>',
+        pageContainerSelector: '',
         progressSelector: '[data-hook="chaperone-progress"]',
         textSelector: '[data-hook="chaperone-text"]',
         backSelector: '[data-hook="chaperone-back"]',
         nextSelector: '[data-hook="chaperone-next"]',
         finishSelector: '[data-hook="chaperone-finish"]',
+        finishCallback: function() { return; },
         animationTime: 300,
         cycle: false,
         autoStart: true,
@@ -39,8 +43,6 @@ module.exports = {
      * @return {void}
      */
     init: function initializeTour( tour ) {
-        'use strict';
-
         var self = this;
 
         // Check to see if we should use document.body or document.documentElement
@@ -125,7 +127,7 @@ module.exports = {
                 self.currentStep = null;
                 self.endTour();
             }
-        }
+        };
 
         this.windowChangeHandler = function windowChangeHandler() {
             // TODO: make a "refresh" message apeear upon window resize
@@ -151,8 +153,6 @@ module.exports = {
      * @return {void}
      */
     placeSteps: function placeSteps( steps ) {
-        'use strict';
-
         var self = this,
             currentSize = self.getCurrentScreenSize();
 
@@ -182,6 +182,8 @@ module.exports = {
                 targetZindex = step.zIndex || parseInt( self.getZindex( target ) ) + 1,
                 windowPosVertMiddle = window.innerHeight / 2,
                 windowPosCenter = window.innerWidth / 2;
+
+            self.addClass( self.options.pageContainerSelector ? document.body.querySelector( self.options.pageContainerSelector ) : document.body , 'chaperone-active' );
 
             // put the stepid/index in an attribute on the throbber
             throbber.setAttribute( 'data-stepid', i );
@@ -237,8 +239,6 @@ module.exports = {
      * @return {object} - Returns the step object
      */
     open: function openStep( stepId ) {
-        'use strict';
-
         var self = this,
             stepIndex = parseInt( stepId ),
             step = self.shownSteps[ stepIndex ],
@@ -261,11 +261,12 @@ module.exports = {
         // if there is a target to the step, select the element and find its position.
         if ( step.target ) {
             currentElement = document.body.querySelector( step.target );
-            targetPosTop = currentElement.getBoundingClientRect().top - 150;
+            targetPosTop = Math.round( currentElement.offsetTop ) - 150;
         }
 
         // scroll to the throbber
         if ( step.position !== 'fixed' ) {
+            console.log( targetPosTop );
             self.scrollTo( document.body, targetPosTop, self.options.animationTime );
         }
         // activate the throbber
@@ -296,7 +297,8 @@ module.exports = {
             nextBtn.setAttribute( 'data-stepid', parseInt( stepIndex + 1 ));
             backBtn.setAttribute( 'data-stepid', parseInt( stepIndex - 1 ));
             // Show the chaperone
-            self.addClass( document.body, 'chaperone-active' );
+            self.addClass( chaperone, 'active' );
+
 
             // hide the back button if this is the first step
             if ( stepNumber === 1 ) {
@@ -327,8 +329,6 @@ module.exports = {
      * @return {void}
      */
     close: function closeStep() {
-        'use strict';
-
         var self = this,
             currentChaperone = document.body.querySelector( '.chaperone' ),
             activeThrobber = document.body.querySelector( '.throbber.active' ),
@@ -344,7 +344,7 @@ module.exports = {
         }
         // animate the old step out
         if ( currentChaperone ) {
-            self.removeClass( document.body, 'chaperone-active' );
+            self.removeClass( currentChaperone, 'active' );
 
             setTimeout( function() {
                 // remove the old step
@@ -357,14 +357,14 @@ module.exports = {
     endTour: function endTour() {
         'use strict';
 
-        var throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
+        var self = this,
+            throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
 
         throbbers.forEach( function( throbber ) {
             throbber.parentNode.removeChild( throbber );
         });
 
-        // Add the global click handler
-        this.removeEventListener( document.body, 'click', self.clickHandler );
+        self.removeClass( self.options.pageContainerSelector ? document.body.querySelector( self.options.pageContainerSelector ) : document.body , 'chaperone-active' );
     },
 
     /**
@@ -379,8 +379,6 @@ module.exports = {
      * @api private
      */
     addEventListener: function addEventListener( el, eventName, handler, useCapture ) {
-        'use strict';
-
         if ( !useCapture ) {
             useCapture = false;
         }
@@ -414,8 +412,6 @@ module.exports = {
      * @api private
      */
     removeEventListener: function removeEventListener( el, eventName, handler, useCapture ) {
-        'use strict';
-
         if ( !useCapture ) {
             useCapture = false;
         }
@@ -450,8 +446,6 @@ module.exports = {
      * @api private
      */
     hasClass: function hasClass( el, className ) {
-        'use strict';
-
         if ( el.classList ) {
             return el.classList.contains( className );
         } else {
@@ -470,8 +464,6 @@ module.exports = {
      * @api private
      */
     addClass: function addClass( el, className ) {
-        'use strict';
-
         if ( el.classList ) {
             el.classList.add( className );
         } else {
@@ -492,8 +484,6 @@ module.exports = {
      * @api private
      */
     removeClass: function removeClass( el, className ) {
-        'use strict';
-
         if ( el ) {
             if ( el.classList ) {
                 el.classList.remove( className );
@@ -516,8 +506,6 @@ module.exports = {
      * @api private
      */
     setInnerText: function setInnerText( el, text ) {
-        'use strict';
-
         if ( el.textContent !== undefined ) {
             el.textcontent = text;
         } else {
@@ -536,8 +524,6 @@ module.exports = {
      * @api private
      */
     createDOMElement: function createDOMElement( html ) {
-        'use strict';
-
         var div = document.createElement( 'div' );
         div.innerHTML = html;
 
@@ -552,8 +538,6 @@ module.exports = {
      * @api private
      */
     getOffset: function getOffset( el ) {
-        'use strict';
-
         var rect = el.getBoundingClientRect(),
         scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
         scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -572,8 +556,6 @@ module.exports = {
      * @api private
      */
     getZindex: function getZindex( e ) {
-        'use strict';
-
         var self = this,
             z,
             dv = document.defaultView || window;
@@ -581,7 +563,7 @@ module.exports = {
         if ( dv.getComputedStyle ) {
             z = dv.getComputedStyle( e ).getPropertyValue( 'z-index' );
         } else {
-            z = e.currentStyle[ 'zindex' ];
+            z = e.currentStyle.zindex;
         }
 
         if ( isNaN( z )) {
@@ -600,8 +582,6 @@ module.exports = {
      * @api private
      */
     scrollTo: function scrollTo( element, to, duration ) {
-        'use strict';
-
         if ( duration < 0 ) {
             return;
         }
@@ -627,8 +607,6 @@ module.exports = {
      * @api private
      */
     arrayContains: function arrayContains( a, obj ) {
-        'use strict';
-
         var i = a.length;
 
         while ( i-- ) {
@@ -646,8 +624,6 @@ module.exports = {
      * @api private
      */
     getCurrentScreenSize: function getCurrentScreenSize() {
-        'use strict';
-
         var self = this,
             currentSize;
 

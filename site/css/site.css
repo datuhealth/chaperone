@@ -890,7 +890,9 @@ section {
 
 .start-tour {
     display: block;
-    margin:30px auto 100px;
+    width: 50%;
+    margin:25px auto;
+    padding: 0;
 }
 
 /* Media Queries
