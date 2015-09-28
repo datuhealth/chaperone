@@ -14,7 +14,8 @@ module.exports = {
             tablet: 1024
         },
         throbberHTML: '<span class="throbber"><span class="dot"></span></span>',
-        chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__title" data-hook="chaperone-title"></div><div class="chaperone__progress" data-hook="chaperone-progress">X of X</div></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><div class="chaperone__controls__wrapper"><a class="close-chaperone" data-hook="close-chaperone"><span class="close thick"></span></a><a class="chaperone-btn" data-hook="chaperone-back">Back</a><a class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div></div>',
+        chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__progress" data-hook="chaperone-progress">3 of 8</div><a href="javascript:void(0);" class="close-chaperone" data-hook="close-chaperone"><svg class="icon icon-x"><use xlink:href="#x"></svg></a></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><a href="javascript:void(0);" class="chaperone-btn" data-hook="chaperone-back">Back</a><a href="javascript:void(0);" class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a href="javascript:void(0);" class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div>',
+        pageContainerSelector: '.container',
         progressSelector: '[data-hook="chaperone-progress"]',
         textSelector: '[data-hook="chaperone-text"]',
         backSelector: '[data-hook="chaperone-back"]',
@@ -183,6 +184,8 @@ module.exports = {
                 windowPosVertMiddle = window.innerHeight / 2,
                 windowPosCenter = window.innerWidth / 2;
 
+            self.addClass( self.options.pageContainerSelector ? document.body.querySelector( self.options.pageContainerSelector ) : document.body , 'chaperone-active' );
+
             // put the stepid/index in an attribute on the throbber
             throbber.setAttribute( 'data-stepid', i );
 
@@ -259,11 +262,12 @@ module.exports = {
         // if there is a target to the step, select the element and find its position.
         if ( step.target ) {
             currentElement = document.body.querySelector( step.target );
-            targetPosTop = currentElement.getBoundingClientRect().top - 150;
+            targetPosTop = Math.round( currentElement.offsetTop - ( screen.height / 1.5 ));
         }
 
         // scroll to the throbber
         if ( step.position !== 'fixed' ) {
+            console.log( targetPosTop );
             self.scrollTo( document.body, targetPosTop, self.options.animationTime );
         }
         // activate the throbber
@@ -294,7 +298,8 @@ module.exports = {
             nextBtn.setAttribute( 'data-stepid', parseInt( stepIndex + 1 ));
             backBtn.setAttribute( 'data-stepid', parseInt( stepIndex - 1 ));
             // Show the chaperone
-            self.addClass( document.body, 'chaperone-active' );
+            self.addClass( chaperone, 'active' );
+
 
             // hide the back button if this is the first step
             if ( stepNumber === 1 ) {
@@ -340,7 +345,7 @@ module.exports = {
         }
         // animate the old step out
         if ( currentChaperone ) {
-            self.removeClass( document.body, 'chaperone-active' );
+            self.removeClass( currentChaperone, 'active' );
 
             setTimeout( function() {
                 // remove the old step
@@ -351,16 +356,16 @@ module.exports = {
     },
 
     endTour: function endTour() {
-        var throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
+        'use strict';
+
+        var self = this,
+            throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
 
         throbbers.forEach( function( throbber ) {
             throbber.parentNode.removeChild( throbber );
         });
 
-        // Add the global click handler
-        this.removeEventListener( document.body, 'click', this.clickHandler );
-
-        this.options.finishCallback();
+        self.removeClass( self.options.pageContainerSelector ? document.body.querySelector( self.options.pageContainerSelector ) : document.body , 'chaperone-active' );
     },
 
     /**
