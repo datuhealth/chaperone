@@ -9,7 +9,8 @@ module.exports = {
      */
     options: {
         breakpoints: {
-            mobile: 640,
+            mobile: 420,
+            mobileLandscape: 740,
             tablet: 1024
         },
         throbberHTML: '<span class="throbber"><span class="dot"></span></span>',
@@ -138,10 +139,9 @@ module.exports = {
 
         this.windowChangeHandler = function windowChangeHandler() {
             var stepTextContainer = document.body.querySelector( self.options.textSelector ),
-                titleContainer = document.body.querySelector( '[data-hook="chaperone-title"]' ),
                 chaperoneActive = document.querySelector( '.chaperone-active' );
 
-            stepTextContainer.innerText = 'Your window has been resized. The tour is variable based on your screen size, please refresh your browser then, if necessary, restart the tour.'
+            stepTextContainer.innerText = 'Your window has been resized. The tour is variable based on your screen size, please refresh your browser then, if necessary, restart the tour.';
             self.addClass( chaperoneActive, 'message' );
 
             return;
@@ -255,6 +255,7 @@ module.exports = {
             currentThrobber = document.body.querySelector( '[data-stepid="' + stepId + '"]' ),
             chaperone = self.createDOMElement( self.options.chaperoneHTML ),
             stepTextContainer,
+            chaperoneActive,
             titleContainer,
             progressContainer,
             nextBtn,
@@ -288,6 +289,7 @@ module.exports = {
             // fill vars with elements as they now exist
             progressContainer = document.body.querySelector( self.options.progressSelector );
             stepTextContainer = document.body.querySelector( self.options.textSelector );
+            chaperoneActive = document.querySelector( '.chaperone-active' );
             titleContainer = document.body.querySelector( '[data-hook="chaperone-title"]' );
             nextBtn = document.body.querySelector( self.options.nextSelector );
             backBtn = document.body.querySelector( self.options.backSelector );
@@ -320,6 +322,11 @@ module.exports = {
             // if there is an openEvent callback then run it
             if ( step.openEvent ) {
                 step.openEvent();
+            }
+
+            if ( self.getCurrentScreenSize() === 'mobileLandscape' ) {
+                stepTextContainer.innerText = 'This tour does not fit mobile landscape screens. Please turn your phone vertical and refresh the page then, if needed, relaunch the tour.';
+                self.addClass( chaperoneActive, 'message' );
             }
         }, 10 );
 
@@ -635,7 +642,9 @@ module.exports = {
 
         if ( document.documentElement.clientWidth < self.options.breakpoints.mobile ) {
             currentSize = 'mobile';
-        } else if ( document.documentElement.clientWidth > self.options.breakpoints.mobile && document.documentElement.clientWidth < self.options.breakpoints.tablet ) {
+        } else if ( document.documentElement.clientWidth < self.options.breakpoints.mobileLandscape && window.innerHeight < window.innerWidth ) {
+            currentSize = 'mobileLandscape';
+        } else if ( document.documentElement.clientWidth > self.options.breakpoints.mobilePortrait && document.documentElement.clientWidth < self.options.breakpoints.tablet ) {
             currentSize = 'tablet';
         } else {
             currentSize = 'desktop';
