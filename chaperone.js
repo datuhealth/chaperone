@@ -13,8 +13,8 @@ module.exports = {
             tablet: 1024
         },
         throbberHTML: '<span class="throbber"><span class="dot"></span></span>',
-        chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__progress" data-hook="chaperone-progress">3 of 8</div><a href="javascript:void(0);" class="close-chaperone" data-hook="close-chaperone"><svg class="icon icon-x"><use xlink:href="#x"></svg></a></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><a href="javascript:void(0);" class="chaperone-btn" data-hook="chaperone-back">Back</a><a href="javascript:void(0);" class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a href="javascript:void(0);" class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div>',
-        pageContainerSelector: '.container',
+        chaperoneHTML: '<div class="chaperone"><div class="chaperone__header"><div class="chaperone__title" data-hook="chaperone-title"></div><div class="chaperone__progress" data-hook="chaperone-progress">X of X</div></div><div class="chaperone__body" data-hook="chaperone-text"></div><div class="chaperone__controls"><div class="chaperone__controls__wrapper"><a class="close-chaperone" data-hook="close-chaperone"><span class="close thick"></span></a><a class="chaperone-btn" data-hook="chaperone-back">Back</a><a class="chaperone-btn chaperone-btn--next" data-hook="chaperone-next">Next</a><a class="chaperone-btn chaperone-btn--finish hide" data-hook="chaperone-finish">Finish</a></div></div></div>',
+        pageContainerSelector: '',
         progressSelector: '[data-hook="chaperone-progress"]',
         textSelector: '[data-hook="chaperone-text"]',
         backSelector: '[data-hook="chaperone-back"]',
@@ -261,7 +261,7 @@ module.exports = {
         // if there is a target to the step, select the element and find its position.
         if ( step.target ) {
             currentElement = document.body.querySelector( step.target );
-            targetPosTop = Math.round( currentElement.offsetTop - ( screen.height / 1.5 ));
+            targetPosTop = Math.round( currentElement.offsetTop ) - 150;
         }
 
         // scroll to the throbber
