@@ -11,15 +11,11 @@
     transition: all .3s;
 }
 
-body {
-    transition: margin-bottom .3s;
-}
-
 .chaperone-active {
     margin-bottom: 200px;
 }
 
-.chaperone-active .chaperone {
+.chaperone.active  {
     bottom:0;
 }
 
