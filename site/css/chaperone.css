@@ -11,6 +11,26 @@
     transition: all .3s;
 }
 
+.chaperone-active.message .throbber {
+  display: none;
+}
+
+.chaperone-active.message .chaperone {
+  background: #EDD155;
+}
+
+.chaperone-active.message .chaperone  .chaperone__header{
+  display: none;
+}
+
+.chaperone-active.message .chaperone  .chaperone__body {
+  margin-top: 40px;
+}
+
+.chaperone-active.message .chaperone  .chaperone__controls{
+  display: none;
+}
+
 .chaperone-active {
     margin-bottom: 200px;
 }

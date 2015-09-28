@@ -130,17 +130,23 @@ module.exports = {
             }
         };
 
-        this.windowChangeHandler = function windowChangeHandler() {
-            // TODO: make a "refresh" message apeear upon window resize
-
-            return;
-        };
 
         // place the steps
         this.placeSteps( self.options.steps );
 
         // Add the global click handler
         this.addEventListener( document.body, 'click', self.clickHandler );
+
+        this.windowChangeHandler = function windowChangeHandler() {
+            var stepTextContainer = document.body.querySelector( self.options.textSelector ),
+                titleContainer = document.body.querySelector( '[data-hook="chaperone-title"]' ),
+                chaperoneActive = document.querySelector( '.chaperone-active' );
+
+            stepTextContainer.innerText = 'Your window has been resized. The tour is variable based on your screen size, please refresh your browser then, if necessary, restart the tour.'
+            self.addClass( chaperoneActive, 'message' );
+
+            return;
+        };
 
         // If a throbber is open and the user resizes the page, tour needs to keep up with the trigger
         this.addEventListener( window, 'resize', this.windowChangeHandler );
