@@ -125,8 +125,6 @@ module.exports = {
             }
 
             if ( finishClose ) {
-                self.close();
-                self.currentStep = null;
                 self.endTour();
             }
         };
@@ -274,7 +272,6 @@ module.exports = {
 
         // scroll to the throbber
         if ( step.position !== 'fixed' ) {
-            console.log( targetPosTop );
             self.scrollTo( document.body, targetPosTop, self.options.animationTime );
         }
         // activate the throbber
@@ -374,11 +371,22 @@ module.exports = {
         var self = this,
             throbbers = Array.prototype.slice.call( document.body.querySelectorAll( '.throbber' ) );
 
+        self.close();
+
+        // Remove all throbbers
         throbbers.forEach( function( throbber ) {
             throbber.parentNode.removeChild( throbber );
         });
 
+        //Remove chaperone body/container class
         self.removeClass( self.options.pageContainerSelector ? document.body.querySelector( self.options.pageContainerSelector ) : document.body , 'chaperone-active' );
+
+        // Remove event listeners
+        this.removeEventListener( document.body, 'click', self.clickHandler );
+        this.removeEventListener( window, 'resize', self.windowChangeHandler );
+
+        // Remove shownSteps
+        self.shownSteps = null;
     },
 
     /**
